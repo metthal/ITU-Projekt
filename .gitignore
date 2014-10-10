@@ -1,0 +1,16 @@
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeTmp/
+cmake_uninstall.cmake
+CTestTestfile.cmake
+Makefile
+
+# Build files
+bin/
+lib/
+*.o
+
+# Qt Creator related files
+*.user
