@@ -5,7 +5,7 @@ WifiNetwork::WifiNetwork(const QString& path)
 {
     _network = new NetworkManagerDBusObject(path);
     _requestProperties();
-    _network->bindSlotToSignal(this, SLOT(propertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
+    _network->bindToSignal(this, SLOT(propertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
 }
 
 WifiNetwork::~WifiNetwork()
@@ -16,7 +16,7 @@ void WifiNetwork::_requestProperties()
 {
     QVariantList args;
     args << QString("org.freedesktop.NetworkManager.AccessPoint");
-    QDBusMessage response = _network->directCall("GetAll", args);
+    QDBusMessage response = _network->call("GetAll", args);
 
     const QDBusArgument& arg = response.arguments()[0].value<QDBusArgument>();
     arg.beginMap();

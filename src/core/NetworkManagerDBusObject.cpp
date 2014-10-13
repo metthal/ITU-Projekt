@@ -13,18 +13,12 @@ NetworkManagerDBusObject::~NetworkManagerDBusObject()
         delete _interface;
 }
 
-void NetworkManagerDBusObject::call(const QString& method, const QList<QVariant>& args)
-{
-    QDBusMessage response = _interface->callWithArgumentList(QDBus::BlockWithGui, method, args);
-    emit responseReceived(response);
-}
-
-QDBusMessage NetworkManagerDBusObject::directCall(const QString& method, const QList<QVariant>& args)
+QDBusMessage NetworkManagerDBusObject::call(const QString& method, const QVariantList& args)
 {
     return _interface->callWithArgumentList(QDBus::BlockWithGui, method, args);
 }
 
-void NetworkManagerDBusObject::bindSlotToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface)
+void NetworkManagerDBusObject::bindToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface)
 {
     QDBusConnection::systemBus().connect(networkManagerService, _interface->path(), interface, signal, receiver, slot);
 }

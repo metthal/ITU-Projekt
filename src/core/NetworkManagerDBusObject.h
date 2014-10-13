@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDBusInterface>
+#include <QDBusMessage>
 
 class NetworkManagerDBusObject : public QObject
 {
@@ -12,10 +13,8 @@ public:
     NetworkManagerDBusObject(const QString& path);
     virtual ~NetworkManagerDBusObject();
 
-    void call(const QString& method, const QList<QVariant>& args = QList<QVariant>());
-    QDBusMessage directCall(const QString& method, const QList<QVariant>& args = QList<QVariant>());
-
-    void bindSlotToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface);
+    QDBusMessage call(const QString& method, const QVariantList& args = QVariantList());
+    void bindToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface);
 
 signals:
     void responseReceived(QDBusMessage response);

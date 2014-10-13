@@ -16,17 +16,12 @@ public:
     virtual ~WifiManager();
 
     void listDevices();
-    void listNetworks();
 
 signals:
     void listDevicesFinished(const QList<WifiDevice*>& deviceList);
     void listDevicesError(QString error);
 
-private slots:
-    void _listDevicesFinished(QDBusMessage response);
-
-//private:
-public:
+private:
     NetworkManagerDBusObject* _networkManager;
     QList<WifiDevice*> _devices;
 };

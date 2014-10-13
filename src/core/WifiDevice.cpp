@@ -28,9 +28,9 @@ bool WifiDevice::isValid()
     if (_validated)
         return _valid;
 
-    QList<QVariant> args;
+    QVariantList args;
     args << QString("org.freedesktop.NetworkManager.Device") << QString("DeviceType");
-    QDBusMessage response = _device->directCall("Get", args);
+    QDBusMessage response = _device->call("Get", args);
 
     // TODO: check response
     const QDBusVariant& arg = response.arguments()[0].value<QDBusVariant>();
@@ -52,15 +52,7 @@ void WifiDevice::networkRemoved(QVariant network)
 
 void WifiDevice::listNetworks()
 {
-    connect(_device, SIGNAL(responseReceived(QDBusMessage)), this, SLOT(_listNetworksFinished(QDBusMessage)));
-    _device->bindSlotToSignal(this, SLOT(networkAdded(QVariant)), "AccessPointAdded", "org.freedesktop.NetworkManager.Device.Wireless");
-    _device->bindSlotToSignal(this, SLOT(networkRemoved(QVariant)), "AccessPointRemoved", "org.freedesktop.NetworkManager.Device.Wireless");
-
-    _device->call("GetAccessPoints");
-}
-
-void WifiDevice::_listNetworksFinished(QDBusMessage response)
-{
+    QDBusMessage response = _device->call("GetAccessPoints");
     if (response.type() != QDBusMessage::ReplyMessage)
     {
         emit listNetworksError("Error in communication with NetworkManager.");
@@ -87,20 +79,16 @@ void WifiDevice::_listNetworksFinished(QDBusMessage response)
     }
     arg.endArray();
 
+    _device->bindToSignal(this, SLOT(networkAdded(QVariant)), "AccessPointAdded", "org.freedesktop.NetworkManager.Device.Wireless");
+    _device->bindToSignal(this, SLOT(networkRemoved(QVariant)), "AccessPointRemoved", "org.freedesktop.NetworkManager.Device.Wireless");
     emit listNetworksFinished();
 }
 
 void WifiDevice::_requestName()
 {
-    connect(_device, SIGNAL(responseReceived(QDBusMessage)), this, SLOT(_requestNameFinished(QDBusMessage)));
-
-    QList<QVariant> args;
+    QVariantList args;
     args << QString("org.freedesktop.NetworkManager.Device") << QString("Interface");
-    _device->call("Get", args);
-}
-
-void WifiDevice::_requestNameFinished(QDBusMessage response)
-{
+    QDBusMessage response = _device->call("Get", args);
     if (response.type() != QDBusMessage::ReplyMessage)
         return;
 

@@ -31,10 +31,6 @@ public slots:
     void networkAdded(QVariant network);
     void networkRemoved(QVariant network);
 
-private slots:
-    void _requestNameFinished(QDBusMessage response);
-    void _listNetworksFinished(QDBusMessage response);
-
 private:
     void _requestName();
 

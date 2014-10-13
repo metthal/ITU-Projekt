@@ -4,7 +4,6 @@
 WifiManager::WifiManager()
 {
     _networkManager = new NetworkManagerDBusObject("/org/freedesktop/NetworkManager");
-    connect(_networkManager, SIGNAL(responseReceived(QDBusMessage)), this, SLOT(_listDevicesFinished(QDBusMessage)));
 }
 
 WifiManager::~WifiManager()
@@ -15,11 +14,7 @@ WifiManager::~WifiManager()
 
 void WifiManager::listDevices()
 {
-    _networkManager->call("GetDevices");
-}
-
-void WifiManager::_listDevicesFinished(QDBusMessage response)
-{
+    QDBusMessage response = _networkManager->call("GetDevices");
     if (response.type() != QDBusMessage::ReplyMessage)
     {
         emit listDevicesError("Error in communication with NetworkManager.");
