@@ -15,6 +15,8 @@ public:
     void call(const QString& method, const QList<QVariant>& args = QList<QVariant>());
     QDBusMessage directCall(const QString& method, const QList<QVariant>& args = QList<QVariant>());
 
+    void bindSlotToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface);
+
 signals:
     void responseReceived(QDBusMessage response);
 

@@ -25,7 +25,8 @@ signals:
 private slots:
     void _listDevicesFinished(QDBusMessage response);
 
-private:
+//private:
+public:
     NetworkManagerDBusObject* _networkManager;
     QList<WifiDevice*> _devices;
 };

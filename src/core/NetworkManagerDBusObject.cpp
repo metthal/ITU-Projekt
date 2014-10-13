@@ -23,3 +23,9 @@ QDBusMessage NetworkManagerDBusObject::directCall(const QString& method, const Q
 {
     return _interface->callWithArgumentList(QDBus::BlockWithGui, method, args);
 }
+
+void NetworkManagerDBusObject::bindSlotToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface)
+{
+    QDBusConnection::systemBus().connect(networkManagerService, _interface->path(), interface, signal, receiver, slot);
+}
+

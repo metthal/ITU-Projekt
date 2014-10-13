@@ -52,7 +52,3 @@ void WifiManager::_listDevicesFinished(QDBusMessage response)
 
     emit listDevicesFinished(_devices);
 }
-
-void WifiManager::listNetworks()
-{
-}
