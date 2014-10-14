@@ -2,8 +2,6 @@
 #define WIFI_MANAGER_H
 
 #include <QObject>
-#include <QDBusMessage>
-#include <QStringList>
 #include "NetworkManagerDBusObject.h"
 #include "WifiDevice.h"
 
@@ -15,11 +13,7 @@ public:
     WifiManager();
     virtual ~WifiManager();
 
-    void listDevices();
-
-signals:
-    void listDevicesFinished(const QList<WifiDevice*>& deviceList);
-    void listDevicesError(QString error);
+    const QList<WifiDevice*>& listDevices();
 
 private:
     NetworkManagerDBusObject* _networkManager;

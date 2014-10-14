@@ -1,5 +1,6 @@
-#include "WifiManager.h"
 #include <QDBusArgument>
+#include "WifiManager.h"
+#include "Exception.h"
 
 WifiManager::WifiManager()
 {
@@ -12,27 +13,18 @@ WifiManager::~WifiManager()
         delete _networkManager;
 }
 
-void WifiManager::listDevices()
+const QList<WifiDevice*>& WifiManager::listDevices()
 {
     QDBusMessage response = _networkManager->call("GetDevices");
     if (response.type() != QDBusMessage::ReplyMessage)
-    {
-        emit listDevicesError("Error in communication with NetworkManager.");
-        return;
-    }
+        throw Exception("Error in communication with NetworkManager.");
 
     if (!response.arguments()[0].canConvert<QDBusArgument>())
-    {
-        emit listDevicesError("Error in communication with NetworkManager.");
-        return;
-    }
+        throw Exception("Error in communication with NetworkManager.");
 
     const QDBusArgument& arg = response.arguments()[0].value<QDBusArgument>();
     if (arg.currentType() != QDBusArgument::ArrayType)
-    {
-        emit listDevicesError("Error in communication with NetworkManager.");
-        return;
-    }
+        throw Exception("Error in communication with NetworkManager.");
 
     arg.beginArray();
     while (!arg.atEnd())
@@ -45,5 +37,5 @@ void WifiManager::listDevices()
     }
     arg.endArray();
 
-    emit listDevicesFinished(_devices);
+    return _devices;
 }

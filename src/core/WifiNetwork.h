@@ -13,15 +13,15 @@ public:
     WifiNetwork(const QString& path);
     virtual ~WifiNetwork();
 
-    void _requestProperties();
-
 signals:
-    void propertiesChanged(WifiNetwork* network);
+    void propertiesChanged();
 
-public slots:
-    void propertiesChanged(QVariantMap props);
+private slots:
+    void _onPropertiesChanged(QVariantMap props);
 
 private:
+    void _requestProperties();
+
     NetworkManagerDBusObject* _network;
     QString _ssid;
     uint32_t _quality;

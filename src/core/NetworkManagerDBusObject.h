@@ -16,9 +16,6 @@ public:
     QDBusMessage call(const QString& method, const QVariantList& args = QVariantList());
     void bindToSignal(QObject* receiver, const char* slot, const QString& signal, const QString& interface);
 
-signals:
-    void responseReceived(QDBusMessage response);
-
 private:
     QDBusInterface* _interface;
 };

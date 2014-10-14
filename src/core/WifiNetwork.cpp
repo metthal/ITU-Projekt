@@ -5,7 +5,7 @@ WifiNetwork::WifiNetwork(const QString& path)
 {
     _network = new NetworkManagerDBusObject(path);
     _requestProperties();
-    _network->bindToSignal(this, SLOT(propertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
+    _network->bindToSignal(this, SLOT(_onPropertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
 }
 
 WifiNetwork::~WifiNetwork()
@@ -38,8 +38,10 @@ void WifiNetwork::_requestProperties()
     arg.endMap();
 }
 
-void WifiNetwork::propertiesChanged(QVariantMap props)
+void WifiNetwork::_onPropertiesChanged(QVariantMap props)
 {
     if (props.contains("Strength"))
         _quality = qvariant_cast<uchar>(props.value("Strength"));
+
+    emit propertiesChanged();
 }

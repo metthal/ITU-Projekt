@@ -1,6 +1,6 @@
-#include "WifiDevice.h"
 #include <QDBusArgument>
-#include <iostream>
+#include "WifiDevice.h"
+#include "Exception.h"
 
 WifiDevice::WifiDevice(const QString& path)
 {
@@ -40,37 +40,28 @@ bool WifiDevice::isValid()
     return _valid;
 }
 
-void WifiDevice::networkAdded(QVariant network)
+void WifiDevice::_onNetworkAdded(QVariant network)
 {
-    std::cout << "NETWORK ADDED" << std::endl;
+    emit networkAdded();
 }
 
-void WifiDevice::networkRemoved(QVariant network)
+void WifiDevice::_onNetworkRemoved(QVariant network)
 {
-    std::cout << "NETWORK REMOVED" << std::endl;
+    emit networkRemoved();
 }
 
-void WifiDevice::listNetworks()
+const QList<WifiNetwork*>& WifiDevice::listNetworks()
 {
     QDBusMessage response = _device->call("GetAccessPoints");
     if (response.type() != QDBusMessage::ReplyMessage)
-    {
-        emit listNetworksError("Error in communication with NetworkManager.");
-        return;
-    }
+        throw Exception("Error in communication with NetworkManager.");
 
     if (!response.arguments()[0].canConvert<QDBusArgument>())
-    {
-        emit listNetworksError("Error in communication with NetworkManager.");
-        return;
-    }
+        throw Exception("Error in communication with NetworkManager.");
 
     const QDBusArgument& arg = response.arguments()[0].value<QDBusArgument>();
     if (arg.currentType() != QDBusArgument::ArrayType)
-    {
-        emit listNetworksError("Error in communication with NetworkManager.");
-        return;
-    }
+        throw Exception("Error in communication with NetworkManager.");
 
     arg.beginArray();
     while (!arg.atEnd())
@@ -79,9 +70,9 @@ void WifiDevice::listNetworks()
     }
     arg.endArray();
 
-    _device->bindToSignal(this, SLOT(networkAdded(QVariant)), "AccessPointAdded", "org.freedesktop.NetworkManager.Device.Wireless");
-    _device->bindToSignal(this, SLOT(networkRemoved(QVariant)), "AccessPointRemoved", "org.freedesktop.NetworkManager.Device.Wireless");
-    emit listNetworksFinished();
+    _device->bindToSignal(this, SLOT(_onNtworkAdded(QVariant)), "AccessPointAdded", "org.freedesktop.NetworkManager.Device.Wireless");
+    _device->bindToSignal(this, SLOT(_onNetworkRemoved(QVariant)), "AccessPointRemoved", "org.freedesktop.NetworkManager.Device.Wireless");
+    return _networks;
 }
 
 void WifiDevice::_requestName()

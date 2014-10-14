@@ -21,15 +21,15 @@ public:
     bool isValid();
     QString name();
 
-    void listNetworks();
+    const QList<WifiNetwork*>& listNetworks();
 
 signals:
-    void listNetworksFinished();
-    void listNetworksError(QString error);
+    void networkAdded();
+    void networkRemoved();
 
-public slots:
-    void networkAdded(QVariant network);
-    void networkRemoved(QVariant network);
+private slots:
+    void _onNetworkAdded(QVariant network);
+    void _onNetworkRemoved(QVariant network);
 
 private:
     void _requestName();
