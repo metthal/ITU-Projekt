@@ -13,7 +13,7 @@ WifiManager::~WifiManager()
         delete _networkManager;
 }
 
-const QList<WifiDevice*>& WifiManager::listDevices()
+void WifiManager::listDevices()
 {
     QDBusMessage response = _networkManager->call("GetDevices");
     if (response.type() != QDBusMessage::ReplyMessage)
@@ -36,6 +36,9 @@ const QList<WifiDevice*>& WifiManager::listDevices()
         _devices.append(device);
     }
     arg.endArray();
+}
 
+const QList<WifiDevice*>& WifiManager::devices() const
+{
     return _devices;
 }

@@ -13,7 +13,8 @@ public:
     WifiManager();
     virtual ~WifiManager();
 
-    const QList<WifiDevice*>& listDevices();
+    void listDevices();
+    const QList<WifiDevice*>& devices() const;
 
 private:
     NetworkManagerDBusObject* _networkManager;

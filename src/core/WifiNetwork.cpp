@@ -12,6 +12,56 @@ WifiNetwork::~WifiNetwork()
 {
 }
 
+bool WifiNetwork::operator==(const WifiNetwork& rhs)
+{
+    return ((_ssid == rhs._ssid) && (_bssid == rhs._bssid));
+}
+
+bool WifiNetwork::operator!=(const WifiNetwork& rhs)
+{
+    return !(*this == rhs);
+}
+
+const QString& WifiNetwork::SSID() const
+{
+    return _ssid;
+}
+
+const QString& WifiNetwork::BSSID() const
+{
+    return _bssid;
+}
+
+uint32_t WifiNetwork::quality() const
+{
+    return _quality;
+}
+
+uint32_t WifiNetwork::frequency() const
+{
+    return _frequency;
+}
+
+AccessPointFlags WifiNetwork::flags() const
+{
+    return _flags;
+}
+
+SecurityFlags WifiNetwork::securityFlags() const
+{
+    return _secFlags;
+}
+
+NetworkMode WifiNetwork::mode() const
+{
+    return _mode;
+}
+
+uint32_t WifiNetwork::maxBitrate() const
+{
+    return _maxBitrate;
+}
+
 void WifiNetwork::_requestProperties()
 {
     QVariantList args;
@@ -30,10 +80,20 @@ void WifiNetwork::_requestProperties()
 
         if (property == "Ssid")
             _ssid = qvariant_cast<QString>(value);
+        else if (property == "HwAddress")
+            _bssid = qvariant_cast<QString>(value);
         else if (property == "Strength")
             _quality = qvariant_cast<uchar>(value);
         else if (property == "Frequency")
             _frequency = qvariant_cast<uint>(value);
+        else if (property == "Flags")
+            _flags = static_cast<AccessPointFlags>(qvariant_cast<uint>(value));
+        else if (property == "WpaFlags")
+            _secFlags = static_cast<SecurityFlags>(qvariant_cast<uint>(value));
+        else if (property == "Mode")
+            _mode = static_cast<NetworkMode>(qvariant_cast<uint>(value));
+        else if (property == "MaxBitrate")
+            _maxBitrate = qvariant_cast<uint>(value);
     }
     arg.endMap();
 }

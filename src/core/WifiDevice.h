@@ -19,9 +19,10 @@ public:
     virtual ~WifiDevice();
 
     bool isValid();
-    QString name();
+    const QString& name() const;
 
-    const QList<WifiNetwork*>& listNetworks();
+    void listNetworks();
+    const QList<WifiNetwork*>& networks() const;
 
 signals:
     void networkAdded();
