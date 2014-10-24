@@ -8,6 +8,12 @@ WifiNetwork::WifiNetwork(const QString& path)
     _network->bindToSignal(this, SLOT(_onPropertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
 }
 
+WifiNetwork::WifiNetwork(const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen)
+{
+    _ssid = QString(ssid);
+    _bssid = QString(bssid);
+}
+
 WifiNetwork::~WifiNetwork()
 {
 }

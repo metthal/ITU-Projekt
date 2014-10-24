@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QString>
+#include <QDateTime>
 #include "NetworkManagerDBusObject.h"
 
 enum AccessPointFlags
@@ -41,6 +42,7 @@ class WifiNetwork : public QObject
 
 public:
     WifiNetwork(const QString& path);
+    WifiNetwork(const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen);
     virtual ~WifiNetwork();
 
     bool operator==(const WifiNetwork& rhs);
