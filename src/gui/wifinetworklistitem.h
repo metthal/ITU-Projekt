@@ -1,18 +1,23 @@
 #ifndef WIFINETWORKLISTITEM_H
 #define WIFINETWORKLISTITEM_H
 
-#include <QListWidgetItem>
+#include <QWidget>
+#include <QPixmap>
 
-class WifiNetworkListItem : public QListWidgetItem
+namespace Ui {
+class WifiNetworkListItem;
+}
+
+class WifiNetworkListItem : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit WifiNetworkListItem(QWidget *parent = 0);
+    ~WifiNetworkListItem();
 
-signals:
-
-public slots:
-
+private:
+    Ui::WifiNetworkListItem *ui;
 };
 
 #endif // WIFINETWORKLISTITEM_H

@@ -26,7 +26,3 @@ QString dummyFoo()
     return QString("Dummy Foo");
 }
 
-QListWidgetItem test()
-{
-    return QListWidgetItem("test");
-}
