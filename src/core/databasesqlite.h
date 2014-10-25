@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QList>
+#include <QDir>
 
 #include "WifiNetwork.h"
 
@@ -13,7 +14,7 @@ class DatabaseSQLite : public QObject
     Q_OBJECT
 
 public:
-    DatabaseSQLite(QObject *parent = 0);
+    DatabaseSQLite(const QString& path, QObject *parent = 0);
     ~DatabaseSQLite();
 
 public:
@@ -29,9 +30,9 @@ public:
 private:
     bool createTables();
 
-    QString datetimeFormat;
-    QString dbPath;
-    QSqlDatabase db;
+    QString _datetimeFormat;
+    QString _dbPath;
+    QSqlDatabase _db;
 };
 
 #endif // DATABASESQLITE_H

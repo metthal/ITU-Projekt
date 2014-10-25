@@ -1,5 +1,6 @@
 #include <QDBusArgument>
 #include "WifiManager.h"
+#include "databasesqlite.h"
 #include "Exception.h"
 
 WifiManager::WifiManager()
@@ -13,7 +14,24 @@ WifiManager::~WifiManager()
         delete _networkManager;
 }
 
-void WifiManager::listDevices()
+void WifiManager::loadDatabase(const QString& path)
+{
+    DatabaseSQLite db(path);
+    db.open();
+    _networks = db.getNetworks();
+    db.close();
+}
+
+void WifiManager::storeDatabase(const QString& path)
+{
+    DatabaseSQLite db(path);
+    db.open();
+    for (WifiNetwork* network : _networks)
+        db.log(network);
+    db.close();
+}
+
+void WifiManager::loadDevices()
 {
     QDBusMessage response = _networkManager->call("GetDevices");
     if (response.type() != QDBusMessage::ReplyMessage)
@@ -31,7 +49,10 @@ void WifiManager::listDevices()
     {
         WifiDevice* device = new WifiDevice(qdbus_cast<QString>(arg));
         if (!device->isValid())
+        {
+            delete device;
             continue;
+        }
 
         _devices.append(device);
     }
@@ -41,4 +62,14 @@ void WifiManager::listDevices()
 const QList<WifiDevice*>& WifiManager::devices() const
 {
     return _devices;
+}
+
+void WifiManager::loadNetworks(WifiDevice* device)
+{
+    device->loadNetworks(_networks);
+}
+
+const QList<WifiNetwork*>& WifiManager::networks() const
+{
+    return _networks;
 }

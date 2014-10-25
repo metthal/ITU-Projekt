@@ -13,12 +13,19 @@ public:
     WifiManager();
     virtual ~WifiManager();
 
-    void listDevices();
+    void loadDatabase(const QString& path);
+    void storeDatabase(const QString& path);
+
+    void loadDevices();
     const QList<WifiDevice*>& devices() const;
+
+    void loadNetworks(WifiDevice* device);
+    const QList<WifiNetwork*>& networks() const;
 
 private:
     NetworkManagerDBusObject* _networkManager;
     QList<WifiDevice*> _devices;
+    QList<WifiNetwork*> _networks;
 };
 
 #endif // WIFIMANAGER_H

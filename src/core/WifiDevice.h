@@ -21,8 +21,7 @@ public:
     bool isValid();
     const QString& name() const;
 
-    void listNetworks();
-    const QList<WifiNetwork*>& networks() const;
+    void loadNetworks(QList<WifiNetwork*>& networks);
 
 signals:
     void networkAdded();
@@ -39,7 +38,6 @@ private:
     QString _name;
     bool _validated;
     bool _valid;
-    QList<WifiNetwork*> _networks;
 };
 
 #endif // WIFI_DEVICE_H

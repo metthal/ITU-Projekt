@@ -3,19 +3,26 @@
 
 WifiNetwork::WifiNetwork(const QString& path)
 {
-    _network = new NetworkManagerDBusObject(path);
-    _requestProperties();
-    _network->bindToSignal(this, SLOT(_onPropertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
+    _id = -1;
+    _network = nullptr;
+    assignToObject(path);
+    _firstSeen = QDateTime::currentDateTime();
 }
 
-WifiNetwork::WifiNetwork(const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen)
+WifiNetwork::WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen)
 {
+    _network = nullptr;
+    _id = id;
     _ssid = QString(ssid);
     _bssid = QString(bssid);
+    _firstSeen = firstSeen;
+    _lastSeen = _lastSeen;
 }
 
 WifiNetwork::~WifiNetwork()
 {
+    if (_network != nullptr)
+        delete _network;
 }
 
 bool WifiNetwork::operator==(const WifiNetwork& rhs)
@@ -28,12 +35,27 @@ bool WifiNetwork::operator!=(const WifiNetwork& rhs)
     return !(*this == rhs);
 }
 
-const QString& WifiNetwork::SSID() const
+void WifiNetwork::assignToObject(const QString& path)
+{
+    if (_network != nullptr)
+        delete _network;
+
+    _network = new NetworkManagerDBusObject(path);
+    _requestProperties();
+    _network->bindToSignal(this, SLOT(_onPropertiesChanged(QVariantMap)), "PropertiesChanged", "org.freedesktop.NetworkManager.AccessPoint");
+}
+
+int32_t WifiNetwork::id() const
+{
+    return _id;
+}
+
+const QString& WifiNetwork::ssid() const
 {
     return _ssid;
 }
 
-const QString& WifiNetwork::BSSID() const
+const QString& WifiNetwork::bssid() const
 {
     return _bssid;
 }

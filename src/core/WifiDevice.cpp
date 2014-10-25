@@ -9,7 +9,6 @@ WifiDevice::WifiDevice(const QString& path)
     _validated = false;
     _valid = false;
     _requestName();
-    _networks = QList<WifiNetwork*>();
 }
 
 WifiDevice::~WifiDevice()
@@ -54,7 +53,7 @@ void WifiDevice::_onNetworkRemoved(QVariant network)
     emit networkRemoved();
 }
 
-void WifiDevice::listNetworks()
+void WifiDevice::loadNetworks(QList<WifiNetwork*>& networks)
 {
     QDBusMessage response = _device->call("GetAccessPoints");
     if (response.type() != QDBusMessage::ReplyMessage)
@@ -70,17 +69,29 @@ void WifiDevice::listNetworks()
     arg.beginArray();
     while (!arg.atEnd())
     {
-        _networks.append(new WifiNetwork(qdbus_cast<QString>(arg)));
+        QString path = qdbus_cast<QString>(arg);
+        WifiNetwork* newNetwork = new WifiNetwork(path);
+        bool found = false;
+        for (WifiNetwork* network : networks)
+        {
+            if (*newNetwork == *network)
+            {
+                delete newNetwork;
+                newNetwork = network;
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+            newNetwork->assignToObject(path);
+        else
+            networks.append(newNetwork);
     }
     arg.endArray();
 
     _device->bindToSignal(this, SLOT(_onNtworkAdded(QVariant)), "AccessPointAdded", "org.freedesktop.NetworkManager.Device.Wireless");
     _device->bindToSignal(this, SLOT(_onNetworkRemoved(QVariant)), "AccessPointRemoved", "org.freedesktop.NetworkManager.Device.Wireless");
-}
-
-const QList<WifiNetwork*>& WifiDevice::networks() const
-{
-    return _networks;
 }
 
 void WifiDevice::_requestName()

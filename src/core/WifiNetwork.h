@@ -42,14 +42,17 @@ class WifiNetwork : public QObject
 
 public:
     WifiNetwork(const QString& path);
-    WifiNetwork(const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen);
+    WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen);
     virtual ~WifiNetwork();
 
     bool operator==(const WifiNetwork& rhs);
     bool operator!=(const WifiNetwork& rhs);
 
-    const QString& SSID() const;
-    const QString& BSSID() const;
+    void assignToObject(const QString& path);
+
+    int32_t id() const;
+    const QString& ssid() const;
+    const QString& bssid() const;
     uint32_t quality() const;
     uint32_t frequency() const;
     AccessPointFlags flags() const;
@@ -67,6 +70,7 @@ private:
     void _requestProperties();
 
     NetworkManagerDBusObject* _network;
+    int32_t _id;
     QString _ssid;
     QString _bssid;
     uint32_t _quality;
@@ -75,6 +79,8 @@ private:
     SecurityFlags _secFlags;
     NetworkMode _mode;
     uint32_t _maxBitrate;
+    QDateTime _firstSeen;
+    QDateTime _lastSeen;
 };
 
 #endif // WIFI_NETWORK_H

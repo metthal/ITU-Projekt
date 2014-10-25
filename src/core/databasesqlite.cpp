@@ -1,16 +1,13 @@
 #include "databasesqlite.h"
 #include <QFile>
-#include <QDir>
 #include <QSqlQuery>
 #include <QMessageBox>
 
-DatabaseSQLite::DatabaseSQLite(QObject *parent)
+DatabaseSQLite::DatabaseSQLite(const QString& path, QObject *parent)
 {
     // Set path to database
-    dbPath = QString(QDir::home().path());
-    dbPath.append(QDir::separator()).append("wifimgr.sqlite");
-    dbPath = QDir::toNativeSeparators(dbPath);
-    datetimeFormat = "yyyy-MM-dd hh:mm:ss";
+    _dbPath = QDir::toNativeSeparators(path);
+    _datetimeFormat = "yyyy-MM-dd hh:mm:ss";
 }
 
 DatabaseSQLite::~DatabaseSQLite()
@@ -20,17 +17,17 @@ DatabaseSQLite::~DatabaseSQLite()
 
 bool DatabaseSQLite::open()
 {
-    if (db.isOpen())
+    if (_db.isOpen())
         return true;
 
-    bool exists = QFile::exists(dbPath);
+    bool exists = QFile::exists(_dbPath);
 
     // Find QSLite driver
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(dbPath);
+    _db = QSqlDatabase::addDatabase("QSQLITE");
+    _db.setDatabaseName(_dbPath);
 
     // Open database
-    bool opened = db.open();
+    bool opened = _db.open();
 
     if (!exists)
         createTables();
@@ -40,33 +37,34 @@ bool DatabaseSQLite::open()
 
 bool DatabaseSQLite::close()
 {
-    if (!db.isOpen())
+    if (!_db.isOpen())
         return true;
 
-    db.close();
+    _db.close();
     return true;
 }
 
 bool DatabaseSQLite::remove()
 {
     close();
-    return QFile::remove(dbPath);
+    return QFile::remove(_dbPath);
 }
 
 bool DatabaseSQLite::log(WifiNetwork* network)
 {
-    if (!db.isOpen())
+    if (!_db.isOpen())
     {
         // TODO: Error, DB not open
     }
 
     QDateTime dt = QDateTime::currentDateTime();
 
-    QString insertQuery = "INSERT INTO WiFi VALUES(NULL,'%1','%2',datetime('%3'),datetime('%4'))";
-    insertQuery = insertQuery.arg(network->SSID(), network->BSSID(), dt.toString(datetimeFormat), dt.toString(datetimeFormat));
-    QMessageBox::information(NULL,"",insertQuery);
-    QSqlQuery query = QSqlQuery(insertQuery, db);
-    if (!query.exec())
+    QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'))";
+    int32_t id = network->id();
+        insertQuery = insertQuery.arg(id != -1 ? QString::number(id) : "NULL", network->ssid(), network->bssid(), dt.toString(_datetimeFormat), dt.toString(_datetimeFormat));
+    QMessageBox::information(NULL, "", insertQuery);
+    QSqlQuery query = QSqlQuery(_db);
+    if (!query.exec(insertQuery))
     {
         QMessageBox::information(NULL,"",QString("Inser error: ").arg(query.lastError().text()));
         //TODO: throw - failed query
@@ -76,32 +74,32 @@ bool DatabaseSQLite::log(WifiNetwork* network)
 
 QList<WifiNetwork*> DatabaseSQLite::getNetworks()
 {
-    if (!db.isOpen())
+    if (!_db.isOpen())
     {
         // TODO: Error, DB not open
     }
 
     QList<WifiNetwork*> networks;
     QString getQuery = "SELECT * FROM WiFi";
-    QSqlQuery query = QSqlQuery(getQuery, db);
-    if (!query.exec())
+    QSqlQuery query = QSqlQuery(_db);
+    if (!query.exec(getQuery))
     {
         QMessageBox::information(NULL,"",QString("Select error: %1").arg(query.lastError().text()));
         //TODO: throw - failed query
     }
-    int i = 0;
     if (query.isActive())
     {
         while (query.next())
         {
+            int32_t id = query.value(0).toInt();
             QString ssid = query.value(1).toString();
             QString bssid = query.value(2).toString();
             QDateTime firstSeen = query.value(3).toDateTime();
             QDateTime lastSeen = query.value(4).toDateTime();
             QString text = "Wifi %1 loaded from DB: %2 %3 (first  %4) (last  %5)";
-            text = text.arg(QString::number(i++), ssid, bssid, firstSeen.toString(datetimeFormat), lastSeen.toString(datetimeFormat));
+            text = text.arg(QString::number(id), ssid, bssid, firstSeen.toString(_datetimeFormat), lastSeen.toString(_datetimeFormat));
             QMessageBox::information(NULL,"",text);
-            networks.append(new WifiNetwork(ssid, bssid, firstSeen, lastSeen));
+            networks.append(new WifiNetwork(id, ssid, bssid, firstSeen, lastSeen));
         }
     }
     else
@@ -120,8 +118,8 @@ bool DatabaseSQLite::createTables()
                                 "firstSeen DATETIME, "
                                 "lastSeen DATETIME)";
 
-    QSqlQuery query = QSqlQuery(createWifiTable, db);
-    if (!query.exec())
+    QSqlQuery query = QSqlQuery(_db);
+    if (!query.exec(createWifiTable))
     {
         QMessageBox::information(NULL,"",QString("Create table error: %1").arg(query.lastError().text()));
         //TODO: throw - failed query
