@@ -25,3 +25,8 @@ QString dummyFoo()
     mgr->storeDatabase(dbPath);
     return QString("Dummy Foo");
 }
+
+QListWidgetItem test()
+{
+    return QListWidgetItem("test");
+}

@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->klineedit->setText(dummyFoo());
+
+   ui->klistwidget->addItem(test());
 }
 
 MainWindow::~MainWindow()

@@ -1,98 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="KXmlGuiWindow" name="MainWindow">
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>791</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="KMenuBar" name="menuBar" native="true">
+  <widget class="QWidget" name="centralwidget">
+   <widget class="KListWidget" name="klistwidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>771</width>
+      <height>541</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>100</width>
-     <height>30</height>
+     <width>791</width>
+     <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuAbout"/>
   </widget>
-  <widget class="KToolBar" name="mainToolBar" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>open</string>
    </property>
-  </widget>
-  <widget class="QWidget" name="centralWidget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>exit</string>
    </property>
-  </widget>
-  <widget class="KStatusBar" name="statusBar" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>100</width>
-     <height>30</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="KLineEdit" name="klineedit">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>110</y>
-     <width>129</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
+  </action>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KXmlGuiWindow</class>
-   <extends>QWidget</extends>
-   <header>kxmlguiwindow.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KMenuBar</class>
-   <extends>QWidget</extends>
-   <header>kmenubar.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KToolBar</class>
-   <extends>QWidget</extends>
-   <header>ktoolbar.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KStatusBar</class>
-   <extends>QWidget</extends>
-   <header>kstatusbar.h</header>
+   <class>KListWidget</class>
+   <extends>QListWidget</extends>
+   <header>klistwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>395</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
