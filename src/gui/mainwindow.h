@@ -1,13 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <kxmlguiwindow.h>
+#include <QMainWindow>
+#include "WifiManager.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public KXmlGuiWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -15,8 +16,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void onPropertyChanged();
+
 private:
-    Ui::MainWindow *ui;
+    void _init();
+    void _orderItems();
+
+    Ui::MainWindow* ui;
+    WifiManager* mgr;
 };
 
 #endif // MAINWINDOW_H

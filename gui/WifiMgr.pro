@@ -36,4 +36,5 @@ HEADERS  += ../src/gui/mainwindow.h \
     ../src/gui/ui_mainwindow.h \
     ../src/core/databasesqlite.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    wifinetworklistitem.ui

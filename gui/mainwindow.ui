@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="KListWidget" name="klistwidget">
+   <widget class="KListWidget" name="networkList">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -55,7 +55,7 @@
    <addaction name="menuView"/>
    <addaction name="menuAbout"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
    <property name="text">
     <string>open</string>

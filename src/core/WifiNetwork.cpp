@@ -5,6 +5,7 @@ WifiNetwork::WifiNetwork(const QString& path)
 {
     _id = -1;
     _network = nullptr;
+    _quality = 0;
     assignToObject(path);
     _firstSeen = QDateTime::currentDateTime();
 }
@@ -33,6 +34,28 @@ bool WifiNetwork::operator==(const WifiNetwork& rhs)
 bool WifiNetwork::operator!=(const WifiNetwork& rhs)
 {
     return !(*this == rhs);
+}
+
+bool WifiNetwork::operator>(const WifiNetwork& rhs)
+{
+    if (_quality > rhs._quality)
+        return true;
+
+    if ((_quality == rhs._quality) && (_ssid > rhs._ssid))
+        return true;
+
+    return false;
+}
+
+bool WifiNetwork::operator<(const WifiNetwork& rhs)
+{
+    if (_quality < rhs._quality)
+        return true;
+
+    if ((_quality == rhs._quality) && (_ssid < rhs._ssid))
+        return true;
+
+    return false;
 }
 
 void WifiNetwork::assignToObject(const QString& path)

@@ -2,7 +2,7 @@
 #define WIFINETWORKLISTITEM_H
 
 #include <QWidget>
-#include <QPixmap>
+#include "WifiNetwork.h"
 
 namespace Ui {
 class WifiNetworkListItem;
@@ -13,11 +13,17 @@ class WifiNetworkListItem : public QWidget
     Q_OBJECT
 
 public:
-    explicit WifiNetworkListItem(QWidget *parent = 0);
+    explicit WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *parent = 0);
     ~WifiNetworkListItem();
 
+    WifiNetwork* wifiNetwork();
+
+public slots:
+    void onPropertyChanged();
+
 private:
-    Ui::WifiNetworkListItem *ui;
+    Ui::WifiNetworkListItem* ui;
+    WifiNetwork* network;
 };
 
 #endif // WIFINETWORKLISTITEM_H

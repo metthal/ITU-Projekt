@@ -24,8 +24,8 @@ public:
     void loadNetworks(QList<WifiNetwork*>& networks);
 
 signals:
-    void networkAdded();
-    void networkRemoved();
+    void networkAdded(WifiNetwork* network);
+    void networkRemoved(WifiNetwork* network);
 
 private slots:
     void _onNetworkAdded(QVariant network);

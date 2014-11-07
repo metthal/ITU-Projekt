@@ -41,16 +41,12 @@ bool WifiDevice::isValid()
 
 void WifiDevice::_onNetworkAdded(QVariant network)
 {
-    // TODO add to list
-
-    emit networkAdded();
+    //emit networkAdded();
 }
 
 void WifiDevice::_onNetworkRemoved(QVariant network)
 {
-    // TODO remove from list
-
-    emit networkRemoved();
+    //emit networkRemoved();
 }
 
 void WifiDevice::loadNetworks(QList<WifiNetwork*>& networks)

@@ -47,6 +47,8 @@ public:
 
     bool operator==(const WifiNetwork& rhs);
     bool operator!=(const WifiNetwork& rhs);
+    bool operator<(const WifiNetwork& rhs);
+    bool operator>(const WifiNetwork& rhs);
 
     void assignToObject(const QString& path);
 
