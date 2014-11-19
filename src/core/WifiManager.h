@@ -22,6 +22,8 @@ public:
     void loadNetworks(WifiDevice* device);
     const QList<WifiNetwork*>& networks() const;
 
+    void setNetworks(const QList<WifiNetwork*>& networks);
+
 private:
     NetworkManagerDBusObject* _networkManager;
     QList<WifiDevice*> _devices;

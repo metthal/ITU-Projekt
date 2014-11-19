@@ -16,8 +16,13 @@ WifiNetwork::WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, 
     _id = id;
     _ssid = QString(ssid);
     _bssid = QString(bssid);
+    _quality = 0;
+    _frequency = 0;
+    _flags = NM_802_11_AP_FLAGS_NONE;
+    _secFlags = NM_802_11_AP_SEC_NONE;
+    _mode = NM_802_11_MODE_UNKNOWN;
     _firstSeen = firstSeen;
-    _lastSeen = _lastSeen;
+    _lastSeen = lastSeen;
 }
 
 WifiNetwork::~WifiNetwork()

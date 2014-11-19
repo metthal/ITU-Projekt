@@ -62,11 +62,9 @@ bool DatabaseSQLite::log(WifiNetwork* network)
     QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'))";
     int32_t id = network->id();
         insertQuery = insertQuery.arg(id != -1 ? QString::number(id) : "NULL", network->ssid(), network->bssid(), dt.toString(_datetimeFormat), dt.toString(_datetimeFormat));
-    QMessageBox::information(NULL, "", insertQuery);
     QSqlQuery query = QSqlQuery(_db);
     if (!query.exec(insertQuery))
     {
-        QMessageBox::information(NULL,"",QString("Inser error: ").arg(query.lastError().text()));
         //TODO: throw - failed query
     }
     return true;
@@ -84,7 +82,6 @@ QList<WifiNetwork*> DatabaseSQLite::getNetworks()
     QSqlQuery query = QSqlQuery(_db);
     if (!query.exec(getQuery))
     {
-        QMessageBox::information(NULL,"",QString("Select error: %1").arg(query.lastError().text()));
         //TODO: throw - failed query
     }
     if (query.isActive())
@@ -98,7 +95,6 @@ QList<WifiNetwork*> DatabaseSQLite::getNetworks()
             QDateTime lastSeen = query.value(4).toDateTime();
             QString text = "Wifi %1 loaded from DB: %2 %3 (first  %4) (last  %5)";
             text = text.arg(QString::number(id), ssid, bssid, firstSeen.toString(_datetimeFormat), lastSeen.toString(_datetimeFormat));
-            QMessageBox::information(NULL,"",text);
             networks.append(new WifiNetwork(id, ssid, bssid, firstSeen, lastSeen));
         }
     }
@@ -119,10 +115,6 @@ bool DatabaseSQLite::createTables()
                                 "lastSeen DATETIME)";
 
     QSqlQuery query = QSqlQuery(_db);
-    if (!query.exec(createWifiTable))
-    {
-        QMessageBox::information(NULL,"",QString("Create table error: %1").arg(query.lastError().text()));
-        //TODO: throw - failed query
-    }
+    query.exec(createWifiTable);
     return true;
 }

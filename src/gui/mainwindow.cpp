@@ -14,21 +14,30 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    for (WifiNetwork* network : mgr->networks())
+        db->log(network);
+
     delete ui;
+    db->close();
+    delete db;
+    delete mgr;
 }
 
 void MainWindow::_init()
 {
-    mgr = new WifiManager;
+    db = new DatabaseSQLite(QDir::homePath() + "/WifiMgr.sqlite");
+    db->open();
+    QList<WifiNetwork*> networks = db->getNetworks();
+
+    mgr = new WifiManager();
+    mgr->setNetworks(networks);
     mgr->loadDevices();
 
     if (mgr->devices().empty())
-    {
         KMessageBox::error(this, "No wireless devices found.");
-        return;
-    }
+    else
+        mgr->loadNetworks(mgr->devices()[0]);
 
-    mgr->loadNetworks(mgr->devices()[0]);
     for (WifiNetwork* network : mgr->networks())
         connect(network, SIGNAL(propertiesChanged()), this, SLOT(onPropertyChanged()));
 

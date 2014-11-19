@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "WifiManager.h"
+#include "databasesqlite.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ private:
 
     Ui::MainWindow* ui;
     WifiManager* mgr;
+    DatabaseSQLite* db;
 };
 
 #endif // MAINWINDOW_H
