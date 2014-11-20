@@ -56,9 +56,9 @@
   <widget class="QLabel" name="WifiSSID">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>90</x>
      <y>50</y>
-     <width>211</width>
+     <width>251</width>
      <height>20</height>
     </rect>
    </property>
