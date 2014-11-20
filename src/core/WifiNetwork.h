@@ -61,6 +61,7 @@ public:
     SecurityFlags securityFlags() const;
     NetworkMode mode() const;
     uint32_t maxBitrate() const;
+    uint32_t channel() const;
 
 signals:
     void propertiesChanged();

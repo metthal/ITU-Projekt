@@ -17,7 +17,6 @@ public:
     ~WifiNetworkListItem();
 
     WifiNetwork* wifiNetwork();
-    int GetWifiChannel();
 
 public slots:
     void onPropertyChanged();

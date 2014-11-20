@@ -34,7 +34,7 @@ void MainWindow::_init()
     mgr->setNetworks(networks);
     mgr->loadDevices();
 
-    ui->networkList->setStyleSheet("KListWidget {background-color: rgb(176,224,230); }");
+    ui->networkList->setStyleSheet("KListWidget { background-color: rgb(176,224,230); }");
 
     if (mgr->devices().empty())
         KMessageBox::error(this, "No wireless devices found.");
