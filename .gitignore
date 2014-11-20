@@ -8,6 +8,7 @@ CTestTestfile.cmake
 Makefile
 
 # Build files
+build/
 bin/
 lib/
 *.o

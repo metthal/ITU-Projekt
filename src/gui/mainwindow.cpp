@@ -3,6 +3,9 @@
 #include "wifinetworklistitem.h"
 #include <kmessagebox.h>
 #include <QScrollBar>
+#include <QFileDialog>
+#include <QDir>
+#include "Exception.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,26 +18,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    for (WifiNetwork* network : mgr->networks())
-        db->log(network);
-
+    mgr->storeDatabase(currentDbPath);
     delete ui;
-    db->close();
-    delete db;
     delete mgr;
 }
 
 void MainWindow::_init()
 {
-    db = new DatabaseSQLite(QDir::homePath() + "/WifiMgr.sqlite");
-    db->open();
-    QList<WifiNetwork*> networks = db->getNetworks();
+    currentDbPath = QDir::homePath() + "/WifiMgr.sqlite";
 
     mgr = new WifiManager();
-    mgr->setNetworks(networks);
+    try
+    {
+        mgr->loadDatabase(currentDbPath);
+    }
+    catch(Exception& e)
+    {
+        KMessageBox::error(this, "Database failed to open.");
+    }
     mgr->loadDevices();
-
-    ui->networkList->setStyleSheet("KListWidget { background-color: rgb(176,224,230); }");
 
     if (mgr->devices().empty())
         KMessageBox::error(this, "No wireless devices found.");
@@ -43,6 +45,8 @@ void MainWindow::_init()
 
     for (WifiNetwork* network : mgr->networks())
         connect(network, SIGNAL(propertiesChanged()), this, SLOT(onPropertyChanged()));
+
+    ui->networkList->setStyleSheet("KListWidget { background-color: rgb(176,224,230); }");
 
     _orderItems();
 }
@@ -75,4 +79,33 @@ void MainWindow::_orderItems()
     }
 
     ui->networkList->verticalScrollBar()->setSliderPosition(scrollValue);
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    mgr->storeDatabase(currentDbPath);
+    WifiManager* newMgr = new WifiManager();
+    QString newDbPath = QFileDialog::getOpenFileName(this, "Open database", QDir::homePath(), "Database Files (*.sqlite)");
+    try
+    {
+        newMgr->loadDatabase(newDbPath);
+        newMgr->loadDevices();
+
+        if (newMgr->devices().empty())
+            throw Exception("No wireless devices found.");
+        else
+            newMgr->loadNetworks(mgr->devices()[0]);
+
+        currentDbPath = newDbPath;
+
+        // Disconnect all current signals
+        disconnect(this, SLOT(onPropertyChanged()));
+        // Reconnect new signals
+        for (WifiNetwork* network : newMgr->networks())
+            connect(network, SIGNAL(propertiesChanged()), this, SLOT(onPropertyChanged()));
+    }
+    catch(Exception& e)
+    {
+        KMessageBox::error(this, "Database failed to open.");
+    }
 }

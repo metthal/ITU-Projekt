@@ -71,17 +71,18 @@ WifiNetwork::WifiNetwork(const QString& path)
     _firstSeen = QDateTime::currentDateTime();
 }
 
-WifiNetwork::WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen)
+WifiNetwork::WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen, const uint32_t frequency, const SecurityFlags secFlags)
 {
     _network = nullptr;
     _id = id;
     _ssid = QString(ssid);
     _bssid = QString(bssid);
     _quality = 0;
-    _frequency = 0;
+    _frequency = frequency;
     _flags = NM_802_11_AP_FLAGS_NONE;
     _wpaFlags = NM_802_11_AP_SEC_NONE;
     _rsnFlags = NM_802_11_AP_SEC_NONE;
+    //_secFlags = secFlags;
     _mode = NM_802_11_MODE_UNKNOWN;
     _firstSeen = firstSeen;
     _lastSeen = lastSeen;

@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "WifiManager.h"
-#include "databasesqlite.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,13 +19,16 @@ public:
 public slots:
     void onPropertyChanged();
 
+private slots:
+    void on_actionOpen_triggered();
+
 private:
     void _init();
     void _orderItems();
 
+    QString currentDbPath;
     Ui::MainWindow* ui;
     WifiManager* mgr;
-    DatabaseSQLite* db;
 };
 
 #endif // MAINWINDOW_H

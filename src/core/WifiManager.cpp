@@ -73,8 +73,3 @@ const QList<WifiNetwork*>& WifiManager::networks() const
 {
     return _networks;
 }
-
-void WifiManager::setNetworks(const QList<WifiNetwork*>& networks)
-{
-    _networks = networks;
-}

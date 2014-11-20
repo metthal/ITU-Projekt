@@ -18,17 +18,17 @@ public:
     ~DatabaseSQLite();
 
 public:
-    bool open();
-    bool close();
-    bool remove();
+    void open();
+    void close();
+    void remove();
 
-    bool log(WifiNetwork* network);
+    void log(WifiNetwork* network);
     QList<WifiNetwork*> getNetworks();
 
     QSqlError lastError();
 
 private:
-    bool createTables();
+    void createTables();
 
     QString _datetimeFormat;
     QString _dbPath;
