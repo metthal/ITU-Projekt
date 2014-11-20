@@ -34,7 +34,12 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     else
         ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/un_lock.png"));
 
-    ui->BitrateIcon->setText("N");
+    if (network->maxBitrate() <= 11000)
+        ui->BitrateIcon->setText("B");
+    if ((network->maxBitrate() > 11000) && (network->maxBitrate() <= 54000))
+        ui->BitrateIcon->setText("G");
+    if(network->maxBitrate() > 54000)
+        ui->BitrateIcon->setText("N");
 
     ui->WifiChan->setText(QString::number(network->channel()));
 
