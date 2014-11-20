@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "wifinetworklistitem.h"
 #include <kmessagebox.h>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -33,7 +34,7 @@ void MainWindow::_init()
     mgr->setNetworks(networks);
     mgr->loadDevices();
 
-    ui->networkList->setStyleSheet("* { background-color: rgb(176,224,230); }");
+    ui->networkList->setStyleSheet("KListWidget {background-color: rgb(176,224,230); }");
 
     if (mgr->devices().empty())
         KMessageBox::error(this, "No wireless devices found.");
@@ -53,6 +54,8 @@ void MainWindow::onPropertyChanged()
 
 void MainWindow::_orderItems()
 {
+    int scrollValue = ui->networkList->verticalScrollBar()->sliderPosition();
+
     int32_t count = ui->networkList->count();
     for (int32_t i = 0; i < count; ++i)
         delete ui->networkList->takeItem(0);
@@ -70,4 +73,6 @@ void MainWindow::_orderItems()
         ui->networkList->addItem(newItem);
         ui->networkList->setItemWidget(newItem, newWifiItem);
     }
+
+    ui->networkList->verticalScrollBar()->setSliderPosition(scrollValue);
 }
