@@ -12,7 +12,7 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     ui->WifiSSID->setText(network->ssid());
     ui->WifiHWAddr->setText(network->bssid());
     ui->WifiStrength->setText(QString::number(network->quality()) + "%");
-    ui->WifiCrypto->setText(network->secured() ? "Secured" : "");
+    ui->WifiCrypto->setText(network->secured() ? network->secureMechanism() : "");
     ui->WifiFirstSeen->setText(network->firstSeen().toString("yyyy-MM-dd hh:mm:ss"));
     ui->WifiLastSeen->setText(network->lastSeen().toString("yyyy-MM-dd hh:mm:ss"));
 

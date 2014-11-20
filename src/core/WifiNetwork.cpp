@@ -214,6 +214,16 @@ void WifiNetwork::lastSeen(const QDateTime& datetime)
     _lastSeen = datetime;
 }
 
+QString WifiNetwork::secureMechanism() const
+{
+    if ((_wpaFlags & NM_802_11_AP_SEC_PAIR_CCMP) || (_rsnFlags & NM_802_11_AP_SEC_PAIR_CCMP))
+        return "WPA2";
+    else if ((_wpaFlags & NM_802_11_AP_SEC_PAIR_TKIP) || (_rsnFlags & NM_802_11_AP_SEC_PAIR_TKIP))
+        return "WPA";
+    else
+        return "WEP";
+}
+
 void WifiNetwork::_requestProperties()
 {
     QVariantList args;
