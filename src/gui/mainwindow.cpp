@@ -25,9 +25,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::_init()
 {
+    _db = new DatabaseSQLite(this);
     currentDbPath = QDir::homePath() + "/WifiMgr.sqlite";
 
-    mgr = new WifiManager();
+    mgr = new WifiManager(_db);
     try
     {
         mgr->loadDatabase(currentDbPath);
@@ -47,6 +48,9 @@ void MainWindow::_init()
         connect(network, SIGNAL(propertiesChanged()), this, SLOT(onPropertyChanged()));
 
     ui->networkList->setStyleSheet("KListWidget { background-color: rgb(176,224,230); }");
+
+    _showOOR = true;
+    ui->actionToggle_OOR->setText("Hide OOR");
 
     _orderItems();
 }
@@ -71,11 +75,15 @@ void MainWindow::_orderItems()
             });
     for (WifiNetwork* network : networkList)
     {
-        QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
-        WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
-        newItem->setSizeHint(QSize(0, 130));
-        ui->networkList->addItem(newItem);
-        ui->networkList->setItemWidget(newItem, newWifiItem);
+        if (network->quality() > 0)
+        {
+            QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
+            WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
+            newItem->setSizeHint(QSize(0, 130));
+
+            ui->networkList->addItem(newItem);
+            ui->networkList->setItemWidget(newItem, newWifiItem);
+        }
     }
 
     ui->networkList->verticalScrollBar()->setSliderPosition(scrollValue);
@@ -83,9 +91,13 @@ void MainWindow::_orderItems()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    mgr->storeDatabase(currentDbPath);
-    WifiManager* newMgr = new WifiManager();
     QString newDbPath = QFileDialog::getOpenFileName(this, "Open database", QDir::homePath(), "Database Files (*.sqlite)");
+    if (newDbPath == "")
+        return;
+
+    mgr->storeDatabase(currentDbPath);
+    WifiManager* newMgr = new WifiManager(_db);
+
     try
     {
         newMgr->loadDatabase(newDbPath);
@@ -108,4 +120,19 @@ void MainWindow::on_actionOpen_triggered()
     {
         KMessageBox::error(this, "Database failed to open.");
     }
+}
+
+void MainWindow::on_actionToggle_OOR_triggered()
+{
+    _showOOR = !_showOOR;
+    if (_showOOR)
+        ui->actionToggle_OOR->setText("Hide OOR");
+    else
+        ui->actionToggle_OOR->setText("Show OOR");
+    _orderItems();
+}
+
+void MainWindow::on_actionWifi_Manager_triggered()
+{
+    KMessageBox::about(this, "WiFi manager is designed <a href='http://www.google.com'>by</a>", "About WiFi Manager", KMessageBox::Notify | KMessageBox::AllowLink);
 }

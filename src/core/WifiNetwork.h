@@ -42,7 +42,8 @@ class WifiNetwork : public QObject
 
 public:
     WifiNetwork(const QString& path);
-    WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen, const uint32_t frequency, const SecurityFlags wpaFlags, const SecurityFlags rsnFlags);
+    WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, const QDateTime& firstSeen, const QDateTime& lastSeen,
+                const uint32_t frequency, const SecurityFlags wpaFlags, const SecurityFlags rsnFlags, const uint32_t maxBitrate);
     virtual ~WifiNetwork();
 
     bool operator==(const WifiNetwork& rhs);

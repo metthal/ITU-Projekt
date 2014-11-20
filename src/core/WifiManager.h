@@ -4,13 +4,14 @@
 #include <QObject>
 #include "NetworkManagerDBusObject.h"
 #include "WifiDevice.h"
+#include "databasesqlite.h"
 
 class WifiManager : public QObject
 {
     Q_OBJECT
 
 public:
-    WifiManager();
+    WifiManager(DatabaseSQLite* db);
     virtual ~WifiManager();
 
     void loadDatabase(const QString& path);
@@ -23,6 +24,7 @@ public:
     const QList<WifiNetwork*>& networks() const;
 
 private:
+    DatabaseSQLite* _db;
     NetworkManagerDBusObject* _networkManager;
     QList<WifiDevice*> _devices;
     QList<WifiNetwork*> _networks;

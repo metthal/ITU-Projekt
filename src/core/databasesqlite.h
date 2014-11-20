@@ -14,11 +14,11 @@ class DatabaseSQLite : public QObject
     Q_OBJECT
 
 public:
-    DatabaseSQLite(const QString& path, QObject *parent = 0);
+    DatabaseSQLite(QObject *parent = 0);
     ~DatabaseSQLite();
 
 public:
-    void open();
+    void open(const QString& path);
     void close();
     void remove();
 
