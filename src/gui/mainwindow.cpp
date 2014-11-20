@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include "Exception.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -50,7 +51,7 @@ void MainWindow::_init()
     ui->networkList->setStyleSheet("KListWidget { background-color: rgb(176,224,230); }");
 
     _showOOR = true;
-    ui->actionToggle_OOR->setText("Hide OOR");
+    ui->actionToggle_OOR->setText("Hide unavailable");
 
     _orderItems();
 }
@@ -62,7 +63,8 @@ void MainWindow::onPropertyChanged()
 
 void MainWindow::_orderItems()
 {
-    int scrollValue = ui->networkList->verticalScrollBar()->sliderPosition();
+    int maximum = ui->networkList->verticalScrollBar()->maximum();
+    int scrollValue = ui->networkList->verticalScrollBar()->value();
 
     int32_t count = ui->networkList->count();
     for (int32_t i = 0; i < count; ++i)
@@ -75,7 +77,7 @@ void MainWindow::_orderItems()
             });
     for (WifiNetwork* network : networkList)
     {
-        if (network->quality() > 0)
+        if (_showOOR || network->quality() > 0)
         {
             QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
             WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
@@ -86,7 +88,8 @@ void MainWindow::_orderItems()
         }
     }
 
-    ui->networkList->verticalScrollBar()->setSliderPosition(scrollValue);
+    ui->networkList->verticalScrollBar()->setMaximum(maximum);
+    ui->networkList->verticalScrollBar()->setValue(scrollValue);
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -126,9 +129,9 @@ void MainWindow::on_actionToggle_OOR_triggered()
 {
     _showOOR = !_showOOR;
     if (_showOOR)
-        ui->actionToggle_OOR->setText("Hide OOR");
+        ui->actionToggle_OOR->setText("Hide unavailable");
     else
-        ui->actionToggle_OOR->setText("Show OOR");
+        ui->actionToggle_OOR->setText("Show unavailable");
     _orderItems();
 }
 

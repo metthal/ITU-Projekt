@@ -80,6 +80,9 @@
    <property name="text">
     <string>Toggle OOR</string>
    </property>
+   <property name="toolTip">
+    <string>Toggles visibility of unavailable networks</string>
+   </property>
   </action>
   <action name="actionWifi_Manager">
    <property name="text">
