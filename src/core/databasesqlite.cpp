@@ -4,11 +4,13 @@
 #include <QMessageBox>
 #include "Exception.h"
 
-DatabaseSQLite::DatabaseSQLite(const QString& path, QObject *parent)
+DatabaseSQLite::DatabaseSQLite(QObject *parent)
 {
     // Set path to database
-    _dbPath = QDir::toNativeSeparators(path);
     _datetimeFormat = "yyyy-MM-dd hh:mm:ss";
+
+    // Find QSLite driver
+    _db = QSqlDatabase::addDatabase("QSQLITE");
 }
 
 DatabaseSQLite::~DatabaseSQLite()
@@ -16,15 +18,14 @@ DatabaseSQLite::~DatabaseSQLite()
     close();
 }
 
-void DatabaseSQLite::open()
+void DatabaseSQLite::open(const QString& path)
 {
     if (_db.isOpen())
         return;
 
+    _dbPath = QDir::toNativeSeparators(path);
     bool exists = QFile::exists(_dbPath);
 
-    // Find QSLite driver
-    _db = QSqlDatabase::addDatabase("QSQLITE");
     _db.setDatabaseName(_dbPath);
 
     // Open database
@@ -60,7 +61,7 @@ void DatabaseSQLite::log(WifiNetwork* network)
     QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'), %6, %7, %8)";
     int32_t id = network->id();
     insertQuery = insertQuery.arg(id != -1 ? QString::number(id) : "NULL", network->ssid(), network->bssid(), network->firstSeen().toString(_datetimeFormat), network->lastSeen().toString(_datetimeFormat),
-                                  QString::number(network->frequency()), QString::number(network->wpaFlags()), QString::number(network->rsnFlags()));
+                                  QString::number(network->frequency()), QString::number(network->wpaFlags()), QString::number(network->rsnFlags()), QString::number(network->maxBitrate()));
     QSqlQuery query = QSqlQuery(_db);
     if (!query.exec(insertQuery))
     {
@@ -94,9 +95,11 @@ QList<WifiNetwork*> DatabaseSQLite::getNetworks()
             uint32_t frequency = query.value(5).toUInt();
             SecurityFlags wpaFlags = (SecurityFlags)query.value(6).toUInt();
             SecurityFlags rsnFlags = (SecurityFlags)query.value(7).toUInt();
-            QString text = "Wifi %1 loaded from DB: %2 %3 (first  %4) (last  %5) %6 %7 %8";
-            text = text.arg(QString::number(id), ssid, bssid, firstSeen.toString(_datetimeFormat), lastSeen.toString(_datetimeFormat), QString::number(frequency), QString::number(wpaFlags), QString::number(rsnFlags));
-            networks.append(new WifiNetwork(id, ssid, bssid, firstSeen, lastSeen, frequency, wpaFlags, rsnFlags));
+            uint32_t bitrate = query.value(8).toUInt();
+            QString text = "Wifi %1 loaded from DB: %2 %3 (first  %4) (last  %5) %6 %7 %8 %9";
+            text = text.arg(QString::number(id), ssid, bssid, firstSeen.toString(_datetimeFormat), lastSeen.toString(_datetimeFormat),
+                            QString::number(frequency), QString::number(wpaFlags), QString::number(rsnFlags), QString::number(bitrate));
+            networks.append(new WifiNetwork(id, ssid, bssid, firstSeen, lastSeen, frequency, wpaFlags, rsnFlags, bitrate));
         }
     }
     else
@@ -116,7 +119,8 @@ void DatabaseSQLite::createTables()
                                 "lastSeen DATETIME,"
                                 "frequency INTEGER,"
                                 "wpaFlags INTEGER,"
-                                "rsnFlags INTEGER)";
+                                "rsnFlags INTEGER,"
+                                "bitrate INTEGER)";
 
     QSqlQuery query = QSqlQuery(_db);
     if (!query.exec(createWifiTable))
