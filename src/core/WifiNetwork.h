@@ -66,6 +66,7 @@ public:
     bool secured() const;
     QDateTime firstSeen() const;
     QDateTime lastSeen() const;
+    void lastSeen(const QDateTime& datetime);
 
 signals:
     void propertiesChanged();

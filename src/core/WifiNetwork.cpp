@@ -209,6 +209,11 @@ QDateTime WifiNetwork::lastSeen() const
     return _lastSeen;
 }
 
+void WifiNetwork::lastSeen(const QDateTime& datetime)
+{
+    _lastSeen = datetime;
+}
+
 void WifiNetwork::_requestProperties()
 {
     QVariantList args;

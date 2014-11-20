@@ -27,7 +27,10 @@ void WifiManager::storeDatabase(const QString& path)
     DatabaseSQLite db(path);
     db.open();
     for (WifiNetwork* network : _networks)
+    {
+        network->lastSeen(QDateTime::currentDateTime());
         db.log(network);
+    }
     db.close();
 }
 
