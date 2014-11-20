@@ -29,7 +29,7 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     else if ((81 <= network->quality()) && (network->quality() <= 100))
         ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi5.png"));
 
-    if (network->securityFlags() == NM_802_11_AP_SEC_NONE)
+    if (network->secured())
         ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/un_lock.png"));
     else
         ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/lock.png"));

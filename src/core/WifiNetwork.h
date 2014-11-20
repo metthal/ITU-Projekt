@@ -62,6 +62,7 @@ public:
     NetworkMode mode() const;
     uint32_t maxBitrate() const;
     uint32_t channel() const;
+    bool secured() const;
 
 signals:
     void propertiesChanged();
@@ -79,7 +80,8 @@ private:
     uint32_t _quality;
     uint32_t _frequency;
     AccessPointFlags _flags;
-    SecurityFlags _secFlags;
+    SecurityFlags _wpaFlags;
+    SecurityFlags _rsnFlags;
     NetworkMode _mode;
     uint32_t _maxBitrate;
     QDateTime _firstSeen;

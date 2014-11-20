@@ -80,7 +80,8 @@ WifiNetwork::WifiNetwork(int32_t id, const QString& ssid, const QString& bssid, 
     _quality = 0;
     _frequency = 0;
     _flags = NM_802_11_AP_FLAGS_NONE;
-    _secFlags = NM_802_11_AP_SEC_NONE;
+    _wpaFlags = NM_802_11_AP_SEC_NONE;
+    _rsnFlags = NM_802_11_AP_SEC_NONE;
     _mode = NM_802_11_MODE_UNKNOWN;
     _firstSeen = firstSeen;
     _lastSeen = lastSeen;
@@ -164,11 +165,6 @@ AccessPointFlags WifiNetwork::flags() const
     return _flags;
 }
 
-SecurityFlags WifiNetwork::securityFlags() const
-{
-    return _secFlags;
-}
-
 NetworkMode WifiNetwork::mode() const
 {
     return _mode;
@@ -186,6 +182,11 @@ uint32_t WifiNetwork::channel() const
         return 0;
 
     return (*itr).second;
+}
+
+bool WifiNetwork::secured() const
+{
+    return ((_wpaFlags != NM_802_11_AP_SEC_NONE) && (_rsnFlags != NM_802_11_AP_SEC_NONE));
 }
 
 void WifiNetwork::_requestProperties()
@@ -215,7 +216,9 @@ void WifiNetwork::_requestProperties()
         else if (property == "Flags")
             _flags = static_cast<AccessPointFlags>(qvariant_cast<uint>(value));
         else if (property == "WpaFlags")
-            _secFlags = static_cast<SecurityFlags>(qvariant_cast<uint>(value));
+            _wpaFlags = static_cast<SecurityFlags>(qvariant_cast<uint>(value));
+        else if (property == "RsnFlags")
+            _rsnFlags = static_cast<SecurityFlags>(qvariant_cast<uint>(value));
         else if (property == "Mode")
             _mode = static_cast<NetworkMode>(qvariant_cast<uint>(value));
         else if (property == "MaxBitrate")
