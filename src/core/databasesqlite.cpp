@@ -58,7 +58,7 @@ void DatabaseSQLite::log(WifiNetwork* network)
         throw Exception("Database is closed, can't update networks.");
     }
 
-    QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'), %6, %7, %8 %9)";
+    QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'), %6, %7, %8, %9)";
     int32_t id = network->id();
     insertQuery = insertQuery.arg(id != -1 ? QString::number(id) : "NULL", network->ssid(), network->bssid(), network->firstSeen().toString(_datetimeFormat), network->lastSeen().toString(_datetimeFormat),
                                   QString::number(network->frequency()), QString::number(network->wpaFlags()), QString::number(network->rsnFlags()), QString::number(network->maxBitrate()));
