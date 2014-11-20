@@ -33,6 +33,8 @@ void MainWindow::_init()
     mgr->setNetworks(networks);
     mgr->loadDevices();
 
+    ui->networkList->setStyleSheet("* { background-color: rgb(176,224,230); }");
+
     if (mgr->devices().empty())
         KMessageBox::error(this, "No wireless devices found.");
     else
@@ -60,12 +62,11 @@ void MainWindow::_orderItems()
             {
                 return (*lhs > *rhs);
             });
-
     for (WifiNetwork* network : networkList)
     {
         QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
         WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
-        newItem->setSizeHint(QSize(0, 100));
+        newItem->setSizeHint(QSize(0, 120));
         ui->networkList->addItem(newItem);
         ui->networkList->setItemWidget(newItem, newWifiItem);
     }

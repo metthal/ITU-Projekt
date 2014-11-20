@@ -6,9 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>85</height>
+    <width>834</width>
+    <height>112</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -17,9 +28,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>0</y>
+     <y>10</y>
      <width>71</width>
-     <height>81</height>
+     <height>91</height>
     </rect>
    </property>
    <property name="text">
@@ -32,8 +43,8 @@
   <widget class="QLabel" name="WifiStrength">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>60</y>
+     <x>10</x>
+     <y>25</y>
      <width>31</width>
      <height>16</height>
     </rect>
@@ -46,13 +57,20 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>10</y>
+     <y>15</y>
      <width>741</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SSID&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -62,10 +80,16 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>30</y>
+     <y>35</y>
      <width>741</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -77,8 +101,8 @@
   <widget class="QLabel" name="WifiChan">
    <property name="geometry">
     <rect>
-     <x>-10</x>
-     <y>50</y>
+     <x>0</x>
+     <y>55</y>
      <width>761</width>
      <height>20</height>
     </rect>
@@ -93,7 +117,7 @@
   <widget class="QLabel" name="LockIcon">
    <property name="geometry">
     <rect>
-     <x>700</x>
+     <x>720</x>
      <y>10</y>
      <width>31</width>
      <height>31</height>
@@ -110,7 +134,7 @@
    <property name="geometry">
     <rect>
      <x>660</x>
-     <y>10</y>
+     <y>15</y>
      <width>41</width>
      <height>16</height>
     </rect>
@@ -122,10 +146,10 @@
   <widget class="QLabel" name="WatchIcon">
    <property name="geometry">
     <rect>
-     <x>700</x>
+     <x>720</x>
      <y>55</y>
      <width>31</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -139,7 +163,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>70</y>
+     <y>75</y>
      <width>331</width>
      <height>20</height>
     </rect>
@@ -155,7 +179,7 @@
    <property name="geometry">
     <rect>
      <x>400</x>
-     <y>70</y>
+     <y>75</y>
      <width>341</width>
      <height>20</height>
     </rect>
@@ -164,6 +188,28 @@
     <string>TextLabel</string>
    </property>
   </widget>
+  <widget class="QWidget" name="verticalWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>-11</y>
+     <width>841</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout"/>
+  </widget>
+  <zorder>verticalWidget</zorder>
+  <zorder>WifiChan</zorder>
+  <zorder>WifiCrypto</zorder>
+  <zorder>WifiFirstSeen</zorder>
+  <zorder>WifiHWAddr</zorder>
+  <zorder>WifiIcon</zorder>
+  <zorder>WifiLastSeen</zorder>
+  <zorder>WifiSSID</zorder>
+  <zorder>WifiStrength</zorder>
+  <zorder>WatchIcon</zorder>
+  <zorder>LockIcon</zorder>
  </widget>
  <resources/>
  <connections/>
