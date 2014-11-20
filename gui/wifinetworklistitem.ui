@@ -45,7 +45,7 @@
     <rect>
      <x>10</x>
      <y>25</y>
-     <width>31</width>
+     <width>41</width>
      <height>16</height>
     </rect>
    </property>
@@ -56,15 +56,15 @@
   <widget class="QLabel" name="WifiSSID">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>15</y>
-     <width>741</width>
+     <x>110</x>
+     <y>50</y>
+     <width>211</width>
      <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <pointsize>15</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -79,9 +79,9 @@
   <widget class="QLabel" name="WifiHWAddr">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>35</y>
-     <width>741</width>
+     <x>445</x>
+     <y>10</y>
+     <width>120</width>
      <height>20</height>
     </rect>
    </property>
@@ -92,32 +92,38 @@
     </font>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>HWAddr</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="WifiChan">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>55</y>
-     <width>761</width>
+     <x>445</x>
+     <y>30</y>
+     <width>101</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Channel</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="LockIcon">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>700</x>
      <y>10</y>
      <width>31</width>
      <height>31</height>
@@ -133,20 +139,30 @@
   <widget class="QLabel" name="WifiCrypto">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>15</y>
-     <width>41</width>
-     <height>16</height>
+     <x>580</x>
+     <y>20</y>
+     <width>80</width>
+     <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+     <kerning>false</kerning>
+    </font>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Crypto: </string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="WatchIcon">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>700</x>
      <y>55</y>
      <width>31</width>
      <height>31</height>
@@ -162,46 +178,151 @@
   <widget class="QLabel" name="WifiFirstSeen">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>75</y>
-     <width>331</width>
+     <x>445</x>
+     <y>50</y>
+     <width>120</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+     <kerning>false</kerning>
+    </font>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>First Seen</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="WifiLastSeen">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>75</y>
-     <width>341</width>
+     <x>445</x>
+     <y>70</y>
+     <width>120</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+     <kerning>false</kerning>
+    </font>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Last seen</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalWidget" native="true">
+  <widget class="QLabel" name="backround">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>-11</y>
+     <x>-2</x>
+     <y>-6</y>
      <width>841</width>
      <height>121</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
-  <zorder>verticalWidget</zorder>
+  <widget class="QLabel" name="WifiHWAddr_name">
+   <property name="geometry">
+    <rect>
+     <x>325</x>
+     <y>10</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="text">
+    <string>HW Address: </string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="WifiChan_name">
+   <property name="geometry">
+    <rect>
+     <x>325</x>
+     <y>30</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="text">
+    <string>Channel: </string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="WifiFirtstSeen_name">
+   <property name="geometry">
+    <rect>
+     <x>325</x>
+     <y>50</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>First seen: </string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>325</x>
+     <y>70</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="text">
+    <string>Last seen: </string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <zorder>backround</zorder>
   <zorder>WifiChan</zorder>
-  <zorder>WifiCrypto</zorder>
   <zorder>WifiFirstSeen</zorder>
   <zorder>WifiHWAddr</zorder>
   <zorder>WifiIcon</zorder>
@@ -210,6 +331,11 @@
   <zorder>WifiStrength</zorder>
   <zorder>WatchIcon</zorder>
   <zorder>LockIcon</zorder>
+  <zorder>WifiCrypto</zorder>
+  <zorder>WifiHWAddr_name</zorder>
+  <zorder>WifiChan_name</zorder>
+  <zorder>WifiFirtstSeen_name</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>

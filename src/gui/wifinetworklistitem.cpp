@@ -2,6 +2,8 @@
 #include "ui_wifinetworklistitem.h"
 #include <QPixmap>
 
+static unsigned int channel2[14]={2412,2417,2422,2427,2432,2437,2442,2447,2452,2457,2462,2467,2472,2484};
+
 WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WifiNetworkListItem),
@@ -12,7 +14,7 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     ui->WifiSSID->setText(network->ssid());
     ui->WifiHWAddr->setText(network->bssid());
     ui->WifiStrength->setText(QString::number(network->quality())+"%");
-    ui->WifiCrypto->setText("WPA2"); // ?? will be here?
+    ui->WifiCrypto->setText("Crypto: WPA2"); // ?? will be here?
     ui->WifiFirstSeen->setText("10.10.2014");
     ui->WifiLastSeen->setText("25.10.2014");
 
@@ -29,9 +31,9 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     if((81 <= network->quality()) && (network->quality() <= 100))
         ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi5.png"));
 
-    if(network->securityFlags() > 0)
+    if(network->securityFlags() > 0x0)
         ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/un_lock.png"));
-    if(network->securityFlags() == 0)
+    if(network->securityFlags() == 0x0)
         ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/lock.png"));
 
     // place holder here.

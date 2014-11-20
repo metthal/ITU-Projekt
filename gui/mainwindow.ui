@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>600</height>
+    <width>790</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Wifi Manager</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="KListWidget" name="networkList">
@@ -19,9 +19,15 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>771</width>
-      <height>541</height>
+      <width>770</width>
+      <height>530</height>
      </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::NoSelection</enum>
@@ -36,7 +42,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>791</width>
+     <width>790</width>
      <height>21</height>
     </rect>
    </property>

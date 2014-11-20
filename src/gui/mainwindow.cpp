@@ -66,7 +66,7 @@ void MainWindow::_orderItems()
     {
         QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
         WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
-        newItem->setSizeHint(QSize(0, 120));
+        newItem->setSizeHint(QSize(0, 130));
         ui->networkList->addItem(newItem);
         ui->networkList->setItemWidget(newItem, newWifiItem);
     }
