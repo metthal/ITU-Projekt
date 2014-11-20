@@ -139,9 +139,9 @@
   <widget class="QLabel" name="WifiCrypto">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>650</x>
      <y>20</y>
-     <width>80</width>
+     <width>51</width>
      <height>20</height>
     </rect>
    </property>
@@ -153,7 +153,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Crypto: </string>
+    <string>WPA</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -290,6 +290,7 @@
    <property name="font">
     <font>
      <pointsize>8</pointsize>
+     <italic>true</italic>
     </font>
    </property>
    <property name="text">

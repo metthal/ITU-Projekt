@@ -14,7 +14,7 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     ui->WifiSSID->setText(network->ssid());
     ui->WifiHWAddr->setText(network->bssid());
     ui->WifiStrength->setText(QString::number(network->quality())+"%");
-    ui->WifiCrypto->setText("Crypto: WPA2"); // ?? will be here?
+    ui->WifiCrypto->setText("WPA2"); // ?? will be here?
     ui->WifiFirstSeen->setText("10.10.2014");
     ui->WifiLastSeen->setText("25.10.2014");
 
@@ -60,7 +60,7 @@ int WifiNetworkListItem::GetWifiChannel()
     for (int i = 0; i < len; ++i)
     {
         if (channel2[i] == network->frequency())
-            return i;
+            return i+1;
     }
     return -1;
 }
