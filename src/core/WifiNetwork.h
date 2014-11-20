@@ -67,6 +67,7 @@ public:
     QDateTime firstSeen() const;
     QDateTime lastSeen() const;
     void lastSeen(const QDateTime& datetime);
+    QString secureMechanism() const;
 
 signals:
     void propertiesChanged();
