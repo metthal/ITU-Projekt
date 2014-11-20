@@ -30,12 +30,11 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
         ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi5.png"));
 
     if (network->secured())
-        ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/un_lock.png"));
-    else
         ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/lock.png"));
+    else
+        ui->LockIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/un_lock.png"));
 
-    // place holder here.
-    ui->WatchIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/watch.png"));
+    ui->BitrateIcon->setText("N");
 
     ui->WifiChan->setText(QString::number(network->channel()));
 
