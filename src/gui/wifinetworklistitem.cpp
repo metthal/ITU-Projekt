@@ -11,10 +11,10 @@ WifiNetworkListItem::WifiNetworkListItem(WifiNetwork* sourceNetwork, QWidget *pa
     setStyleSheet("* { background-color: rgb(224,255,255); }");
     ui->WifiSSID->setText(network->ssid());
     ui->WifiHWAddr->setText(network->bssid());
-    ui->WifiStrength->setText(QString::number(network->quality())+"%");
-    ui->WifiCrypto->setText("WPA2"); // ?? will be here?
-    ui->WifiFirstSeen->setText("10.10.2014");
-    ui->WifiLastSeen->setText("25.10.2014");
+    ui->WifiStrength->setText(QString::number(network->quality()) + "%");
+    ui->WifiCrypto->setText(network->secured() ? "Secured" : "");
+    ui->WifiFirstSeen->setText(network->firstSeen().toString("yyyy-MM-dd hh:mm:ss"));
+    ui->WifiLastSeen->setText(network->lastSeen().toString("yyyy-MM-dd hh:mm:ss"));
 
     if (network->quality() == 0)
         ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi0.png"));

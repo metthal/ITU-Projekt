@@ -64,6 +64,8 @@ public:
     uint32_t maxBitrate() const;
     uint32_t channel() const;
     bool secured() const;
+    QDateTime firstSeen() const;
+    QDateTime lastSeen() const;
 
 signals:
     void propertiesChanged();

@@ -199,6 +199,16 @@ bool WifiNetwork::secured() const
     return ((_wpaFlags != NM_802_11_AP_SEC_NONE) && (_rsnFlags != NM_802_11_AP_SEC_NONE));
 }
 
+QDateTime WifiNetwork::firstSeen() const
+{
+    return _firstSeen;
+}
+
+QDateTime WifiNetwork::lastSeen() const
+{
+    return _lastSeen;
+}
+
 void WifiNetwork::_requestProperties()
 {
     QVariantList args;
