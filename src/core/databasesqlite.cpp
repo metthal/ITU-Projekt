@@ -59,9 +59,10 @@ void DatabaseSQLite::log(WifiNetwork* network)
 
     QDateTime dt = QDateTime::currentDateTime();
 
-    QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'), %6, %7)";
+    QString insertQuery = "REPLACE INTO WiFi VALUES(%1,'%2','%3',datetime('%4'),datetime('%5'), %6, %7, %8)";
     int32_t id = network->id();
-    insertQuery = insertQuery.arg(id != -1 ? QString::number(id) : "NULL", network->ssid(), network->bssid(), dt.toString(_datetimeFormat), dt.toString(_datetimeFormat), QString::number(network->frequency()), QString::number(network->securityFlags()));
+    insertQuery = insertQuery.arg(id != -1 ? QString::number(id) : "NULL", network->ssid(), network->bssid(), dt.toString(_datetimeFormat), dt.toString(_datetimeFormat),
+                                  QString::number(network->frequency()), QString::number(network->wpaFlags()), QString::number(network->rsnFlags()));
     QSqlQuery query = QSqlQuery(_db);
     if (!query.exec(insertQuery))
     {
@@ -93,10 +94,11 @@ QList<WifiNetwork*> DatabaseSQLite::getNetworks()
             QDateTime firstSeen = query.value(3).toDateTime();
             QDateTime lastSeen = query.value(4).toDateTime();
             uint32_t frequency = query.value(5).toUInt();
-            SecurityFlags secFlags = (SecurityFlags)query.value(6).toUInt();
-            QString text = "Wifi %1 loaded from DB: %2 %3 (first  %4) (last  %5) %6 %7";
-            text = text.arg(QString::number(id), ssid, bssid, firstSeen.toString(_datetimeFormat), lastSeen.toString(_datetimeFormat), QString::number(frequency), QString::number(secFlags));
-            networks.append(new WifiNetwork(id, ssid, bssid, firstSeen, lastSeen, frequency, secFlags));
+            SecurityFlags wpaFlags = (SecurityFlags)query.value(6).toUInt();
+            SecurityFlags rsnFlags = (SecurityFlags)query.value(7).toUInt();
+            QString text = "Wifi %1 loaded from DB: %2 %3 (first  %4) (last  %5) %6 %7 %8";
+            text = text.arg(QString::number(id), ssid, bssid, firstSeen.toString(_datetimeFormat), lastSeen.toString(_datetimeFormat), QString::number(frequency), QString::number(wpaFlags), QString::number(rsnFlags));
+            networks.append(new WifiNetwork(id, ssid, bssid, firstSeen, lastSeen, frequency, wpaFlags, rsnFlags));
         }
     }
     else
@@ -115,7 +117,8 @@ void DatabaseSQLite::createTables()
                                 "firstSeen DATETIME, "
                                 "lastSeen DATETIME,"
                                 "frequency INTEGER,"
-                                "secFlags INTEGER)";
+                                "wpaFlags INTEGER,"
+                                "rsnFlags INTEGER)";
 
     QSqlQuery query = QSqlQuery(_db);
     if (!query.exec(createWifiTable))
