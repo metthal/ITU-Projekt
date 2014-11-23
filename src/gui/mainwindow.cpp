@@ -7,6 +7,9 @@
 #include <QDir>
 #include "Exception.h"
 #include <iostream>
+#include <algorithm>
+#include <QKeyEvent>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,12 +56,37 @@ void MainWindow::_init()
     _showOOR = true;
     ui->actionToggle_OOR->setText("Hide unavailable");
 
+    filter = new KeyEventFilter(this);
+    ui->networkList->installEventFilter(filter);
+
     _orderItems();
 }
 
 void MainWindow::onPropertyChanged()
 {
     _orderItems();
+}
+
+void MainWindow::runSearch(const QString& searchString)
+{
+    bool found = false;
+
+    for (WifiNetwork* network : _orderedNetworks)
+    {
+        if (searchInString(network->ssid(), searchString))
+        {
+            QListWidgetItem* item = findWifiItem(network);
+            if (item != nullptr)
+            {
+                found = true;
+                ui->networkList->setCurrentItem(item);
+                break;
+            }
+        }
+    }
+
+    if (!found)
+        QApplication::beep();
 }
 
 void MainWindow::_orderItems()
@@ -75,6 +103,9 @@ void MainWindow::_orderItems()
             {
                 return (*lhs > *rhs);
             });
+
+    _orderedNetworks = networkList;
+
     for (WifiNetwork* network : networkList)
     {
         if (_showOOR || network->quality() > 0)
@@ -90,6 +121,31 @@ void MainWindow::_orderItems()
 
     ui->networkList->verticalScrollBar()->setMaximum(maximum);
     ui->networkList->verticalScrollBar()->setValue(scrollValue);
+}
+
+bool MainWindow::searchInString(const QString& where, const QString& what)
+{
+    auto it = std::search(
+        where.begin(), where.end(),
+        what.begin(), what.end(),
+        [](QChar ch1, QChar ch2) { return ch1.toUpper() == ch2.toUpper(); }
+    );
+
+    return it == where.begin();
+}
+
+QListWidgetItem* MainWindow::findWifiItem(const WifiNetwork* wifiToFind)
+{
+    for (int i = 0; i < ui->networkList->count(); i++) {
+        QListWidgetItem *item = ui->networkList->item(i);
+        WifiNetworkListItem *widget = static_cast<WifiNetworkListItem*>(ui->networkList->itemWidget(item));
+
+        WifiNetwork* network = widget->wifiNetwork();
+        if (network == wifiToFind)
+            return item;
+    }
+
+    return nullptr;
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -137,5 +193,6 @@ void MainWindow::on_actionToggle_OOR_triggered()
 
 void MainWindow::on_actionWifi_Manager_triggered()
 {
-    KMessageBox::about(this, "WiFi manager is designed <a href='http://www.google.com'>by</a>", "About WiFi Manager", KMessageBox::Notify | KMessageBox::AllowLink);
+    KMessageBox::about(this, QString::fromUtf8("WiFi manager is designed by<br/>Marek Milkovič<br/>Lukáš Vrabec<br/>Ivan Sevčík<br/><br/><a href='http://www.google.com'>Project website</a>"),
+                       "About WiFi Manager", KMessageBox::Notify | KMessageBox::AllowLink);
 }

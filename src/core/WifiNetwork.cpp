@@ -109,9 +109,13 @@ bool WifiNetwork::operator>(const WifiNetwork& rhs)
 {
     if (_quality > rhs._quality)
         return true;
-
-    if ((_quality == rhs._quality) && (_ssid > rhs._ssid))
-        return true;
+    else if (_quality == rhs._quality)
+    {
+        if (_ssid < rhs._ssid)
+            return true;
+        else if (_ssid == rhs._ssid)
+            return channel() < rhs.channel();
+    }
 
     return false;
 }
@@ -120,9 +124,13 @@ bool WifiNetwork::operator<(const WifiNetwork& rhs)
 {
     if (_quality < rhs._quality)
         return true;
-
-    if ((_quality == rhs._quality) && (_ssid < rhs._ssid))
-        return true;
+    else if (_quality == rhs._quality)
+    {
+        if (_ssid > rhs._ssid)
+            return true;
+        else if (_ssid == rhs._ssid)
+            return channel() > rhs.channel();
+    }
 
     return false;
 }

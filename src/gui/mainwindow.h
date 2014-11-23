@@ -2,8 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidgetItem>
+#include <QTimer>
 #include "WifiManager.h"
 #include "databasesqlite.h"
+#include "keyEventFilter.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +22,7 @@ public:
 
 public slots:
     void onPropertyChanged();
+    void runSearch(const QString& searchString);
 
 private slots:
     void on_actionOpen_triggered();
@@ -30,12 +34,18 @@ private slots:
 private:
     void _init();
     void _orderItems();
+    bool searchInString(const QString& where, const QString& what);
+    QListWidgetItem* findWifiItem(const WifiNetwork* wifiToFind);
 
     QString currentDbPath;
     Ui::MainWindow* ui;
     WifiManager* mgr;
     DatabaseSQLite* _db;
     bool _showOOR;
+
+    QList<WifiNetwork*> _orderedNetworks;
+
+    KeyEventFilter* filter;
 };
 
 #endif // MAINWINDOW_H
