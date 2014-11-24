@@ -3,6 +3,7 @@
 
 #include <QTimer>
 #include <QWidget>
+#include <QLabel>
 
 class KeyEventFilter : public QObject
 {
@@ -22,6 +23,11 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
 private:
+    QWidget* _mainWindow;
+
+    QWidget* _filterDialog;
+    QLabel* _searchLabel;
+
     int _keyTimerDelay;
     QTimer* _keyTimer;
     bool _searchRunning;

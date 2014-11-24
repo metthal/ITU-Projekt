@@ -24,7 +24,10 @@ SOURCES += ../src/gui/main.cpp\
     ../src/gui/moc_WifiDevice.cpp \
     ../src/gui/moc_WifiManager.cpp \
     ../src/gui/WifiMgr_automoc.cpp \
-    ../src/core/databasesqlite.cpp
+    ../src/core/databasesqlite.cpp \
+    ../src/gui/keyEventFilter.cpp \
+    ../src/gui/wifinetworklistitem.cpp \
+    filterdialog.cpp
 
 HEADERS  += ../src/gui/mainwindow.h \
     ../src/core/dummy.h \
@@ -34,7 +37,10 @@ HEADERS  += ../src/gui/mainwindow.h \
     ../src/core/WifiManager.h \
     ../src/core/WifiNetwork.h \
     ../src/gui/ui_mainwindow.h \
-    ../src/core/databasesqlite.h
+    ../src/core/databasesqlite.h \
+    ../src/gui/keyEventFilter.h \
+    ../src/gui/wifinetworklistitem.h \
+    filterdialog.h
 
 FORMS    += mainwindow.ui \
     wifinetworklistitem.ui
