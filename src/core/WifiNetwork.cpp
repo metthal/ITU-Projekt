@@ -111,9 +111,10 @@ bool WifiNetwork::operator>(const WifiNetwork& rhs)
         return true;
     else if (_quality == rhs._quality)
     {
-        if (_ssid < rhs._ssid)
+        int comp = _ssid.compare(rhs._ssid, Qt::CaseInsensitive);
+        if (comp < 0)
             return true;
-        else if (_ssid == rhs._ssid)
+        else if (comp == 0)
             return channel() < rhs.channel();
     }
 
@@ -126,9 +127,10 @@ bool WifiNetwork::operator<(const WifiNetwork& rhs)
         return true;
     else if (_quality == rhs._quality)
     {
-        if (_ssid > rhs._ssid)
+        int comp = _ssid.compare(rhs._ssid, Qt::CaseInsensitive);
+        if (comp > 0)
             return true;
-        else if (_ssid == rhs._ssid)
+        else if (comp == 0)
             return channel() > rhs.channel();
     }
 

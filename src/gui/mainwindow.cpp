@@ -162,23 +162,24 @@ void MainWindow::on_actionOpen_triggered()
         newMgr->loadDatabase(newDbPath);
         newMgr->loadDevices();
 
-        if (newMgr->devices().empty())
-            throw Exception("No wireless devices found.");
-        else
+        if (!newMgr->devices().empty())
             newMgr->loadNetworks(mgr->devices()[0]);
 
         currentDbPath = newDbPath;
+        mgr = newMgr;
 
         // Disconnect all current signals
         disconnect(this, SLOT(onPropertyChanged()));
         // Reconnect new signals
         for (WifiNetwork* network : newMgr->networks())
             connect(network, SIGNAL(propertiesChanged()), this, SLOT(onPropertyChanged()));
+
     }
     catch(Exception& e)
     {
         KMessageBox::error(this, "Database failed to open.");
     }
+    _orderItems();
 }
 
 void MainWindow::on_actionToggle_OOR_triggered()
