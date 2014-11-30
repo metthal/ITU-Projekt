@@ -95,8 +95,8 @@ void MainWindow::_orderItems()
     int scrollValue = ui->networkList->verticalScrollBar()->value();
 
     int32_t count = ui->networkList->count();
-    for (int32_t i = 0; i < count; ++i)
-        delete ui->networkList->takeItem(0);
+    /*for (int32_t i = 0; i < count; ++i)
+        delete ui->networkList->takeItem(0);*/
 
     QList<WifiNetwork*> networkList(mgr->networks());
     std::sort(networkList.begin(), networkList.end(), [](WifiNetwork* lhs, WifiNetwork* rhs)
@@ -106,17 +106,36 @@ void MainWindow::_orderItems()
 
     _orderedNetworks = networkList;
 
+    int currentRow = 0;
     for (WifiNetwork* network : networkList)
     {
-        if (_showOOR || network->quality() > 0)
+        QListWidgetItem* item = findWifiItem(network);
+        if (item == nullptr)
         {
-            QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
-            WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
-            newItem->setSizeHint(QSize(0, 130));
+            if (_showOOR || network->quality() > 0)
+            {
+                QListWidgetItem* newItem = new QListWidgetItem(ui->networkList);
+                WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
+                newItem->setSizeHint(QSize(0, 130));
 
-            ui->networkList->addItem(newItem);
-            ui->networkList->setItemWidget(newItem, newWifiItem);
+                ui->networkList->insertItem(currentRow, newItem);
+                ui->networkList->setItemWidget(newItem, newWifiItem);
+            }
         }
+        else
+        {
+            int idx = ui->networkList->row(item);
+            if (idx != currentRow)
+            {
+                ui->networkList->takeItem(idx);
+                ui->networkList->insertItem(currentRow, item);
+
+                WifiNetworkListItem* newWifiItem = new WifiNetworkListItem(network, this);
+                ui->networkList->setItemWidget(item, newWifiItem);
+            }
+
+        }
+        currentRow++;
     }
 
     ui->networkList->verticalScrollBar()->setMaximum(maximum);
@@ -173,12 +192,13 @@ void MainWindow::on_actionOpen_triggered()
         // Reconnect new signals
         for (WifiNetwork* network : newMgr->networks())
             connect(network, SIGNAL(propertiesChanged()), this, SLOT(onPropertyChanged()));
-
     }
     catch(Exception& e)
     {
         KMessageBox::error(this, "Database failed to open.");
     }
+
+    ui->networkList->clear();
     _orderItems();
 }
 
@@ -189,6 +209,8 @@ void MainWindow::on_actionToggle_OOR_triggered()
         ui->actionToggle_OOR->setText("Hide unavailable");
     else
         ui->actionToggle_OOR->setText("Show unavailable");
+
+    ui->networkList->clear();
     _orderItems();
 }
 

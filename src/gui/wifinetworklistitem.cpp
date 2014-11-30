@@ -53,7 +53,20 @@ WifiNetwork* WifiNetworkListItem::wifiNetwork()
 
 void WifiNetworkListItem::onPropertyChanged()
 {
-    ui->WifiStrength->setText(QString::number(network->quality()));
+    ui->WifiStrength->setText(QString::number(network->quality()) + "%");
+
+    if (network->quality() == 0)
+        ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi0.png"));
+    else if ((0 < network->quality()) && (network->quality() <= 20))
+        ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi1.png"));
+    else if ((21 <= network->quality()) && (network->quality() <= 40))
+        ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi2.png"));
+    else if ((41 <= network->quality()) && (network->quality() <= 60))
+        ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi3.png"));
+    else if ((61 <= network->quality()) && (network->quality() <= 80))
+        ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi4.png"));
+    else if ((81 <= network->quality()) && (network->quality() <= 100))
+        ui->WifiIcon->setPixmap(QPixmap("/usr/local/share/WifiMgr/images/wifi5.png"));
 }
 
 WifiNetworkListItem::~WifiNetworkListItem()
